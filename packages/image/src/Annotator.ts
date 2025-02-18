@@ -117,8 +117,34 @@ export class Annotator extends AnnotatorBase {
       throw new Error('axis is not initialized');
     }
 
-    axis.restScale(1);
+    const { backgroundRenderer, container } = this;
+
+    if (!backgroundRenderer || !container) {
+      throw new Error('backgroundRenderer or container is not initialized');
+    }
+
+    // 获取图片和容器的实际尺寸
+    const containerWidth = container.clientWidth;
+    const containerHeight = container.clientHeight;
+    const imageWidth = backgroundRenderer.image?.width || 0;
+    const imageHeight = backgroundRenderer.image?.height || 0;
+
+    // 考虑初始缩放比例
+    const initialScale = axis.initialBackgroundScale;
+
+    // 计算水平和垂直方向的缩放比例，需要除以初始缩放比例来得到正确的相对缩放值
+    const scaleX = containerWidth / imageWidth / initialScale;
+    const scaleY = containerHeight / imageHeight / initialScale;
+
+    // 使用较小的缩放比例，确保图片完全显示在容器内
+    const scale = Math.min(scaleX, scaleY);
+
+    // 应用缩放
+    axis.restScale(scale);
     axis.center();
+
+    // 确保重新渲染
+    this.render();
   }
 
   public get toolMap() {
