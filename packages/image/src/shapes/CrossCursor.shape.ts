@@ -79,29 +79,29 @@ export class CrossCursor {
       return;
     }
 
-    const { stroke, strokeWidth, fill } = this._style;
-    const canvas = ctx.canvas;
+    // const { stroke, strokeWidth, fill } = this._style;
+    // const canvas = ctx.canvas;
 
-    ctx.strokeStyle = stroke;
-    ctx.lineWidth = strokeWidth;
-    // 根据给定的坐标在canvas上画十字线
-    ctx.beginPath();
-    ctx.globalAlpha = 0.8;
-    ctx.moveTo(finalX, 0);
-    ctx.lineTo(finalX, canvas.height * 10);
-    ctx.moveTo(0, finalY);
-    ctx.lineTo(canvas.width * 10, finalY);
-    ctx.stroke();
-    ctx.translate(finalX, finalY);
-    // 中心点白色
-    ctx.globalAlpha = 0.8;
-    ctx.fillStyle = fill;
-    ctx.strokeStyle = 'transparent';
-    ctx.lineWidth = 0;
-    ctx.arc(0, 0, dpr, 0, 2 * Math.PI, false);
-    ctx.fill();
+    // ctx.strokeStyle = stroke;
+    // ctx.lineWidth = strokeWidth;
+    // // 根据给定的坐标在canvas上画十字线
+    // ctx.beginPath();
+    // ctx.globalAlpha = 0.8;
+    // ctx.moveTo(finalX, 0);
+    // ctx.lineTo(finalX, canvas.height * 10);
+    // ctx.moveTo(0, finalY);
+    // ctx.lineTo(canvas.width * 10, finalY);
+    // ctx.stroke();
+    // ctx.translate(finalX, finalY);
+    // // 中心点白色
+    // ctx.globalAlpha = 0.8;
+    // ctx.fillStyle = fill;
+    // ctx.strokeStyle = 'transparent';
+    // ctx.lineWidth = 0;
+    // ctx.arc(0, 0, dpr, 0, 2 * Math.PI, false);
+    // ctx.fill();
 
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.restore();
+    // ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    // ctx.restore();
   }
 }
