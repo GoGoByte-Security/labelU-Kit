@@ -40,6 +40,7 @@ export function ToolWrapper<
       eventEmitter.on(EInternalEvent.Escape, this.handleEscape);
       eventEmitter.on(EInternalEvent.Delete, this._handleDelete);
       eventEmitter.on(EInternalEvent.BackSpace, this._handleDelete);
+      eventEmitter.on(EInternalEvent.LeftMouseUp, this.handleMouseUp);
     }
 
     private _handleLeftMouseDown = (e: MouseEvent) => {
@@ -202,6 +203,7 @@ export function ToolWrapper<
       eventEmitter.off(EInternalEvent.Escape, this.handleEscape);
       eventEmitter.off(EInternalEvent.Delete, this._handleDelete);
       eventEmitter.off(EInternalEvent.BackSpace, this._handleDelete);
+      eventEmitter.off(EInternalEvent.LeftMouseUp, this.handleMouseUp);
     }
   };
 }

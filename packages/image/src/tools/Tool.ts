@@ -191,6 +191,10 @@ export class Tool<Data extends BasicImageAnnotation, Style, Config extends Basic
     );
   }
 
+  protected handleMouseUp = (_e: MouseEvent) => {
+    // do nothing
+  };
+
   constructor({ name, data, style, hoveredStyle, selectedStyle, showOrder, ...config }: Config & ExtraParams) {
     // 创建标签映射
     this._createLabelMapping(config.labels);

@@ -270,8 +270,7 @@ export class RectTool extends Tool<RectData, RectStyle, RectToolOptions> {
   };
 
   protected handleMouseDown = (e: MouseEvent) => {
-    // ====================== 绘制 ======================
-    const { activeLabel, style, draft, config, sketch } = this;
+    const { activeLabel, style, draft, config } = this;
 
     const isUnderDraft = draft && draft.isRectAndControllersUnderCursor({ x: e.offsetX, y: e.offsetY });
 
@@ -282,33 +281,29 @@ export class RectTool extends Tool<RectData, RectStyle, RectToolOptions> {
     // 先归档上一次的草稿
     this.archiveDraft();
 
-    if (sketch) {
-      this._archiveSketch(e);
-    } else {
-      // 记录起始点坐标
-      this._startPoint = axis!.getOriginalCoord({
-        // 超出安全区域的点直接落在安全区域边缘
-        x: config.outOfImage ? e.offsetX : axis!.getSafeX(e.offsetX),
-        y: config.outOfImage ? e.offsetY : axis!.getSafeY(e.offsetY),
-      });
+    // 记录起始点坐标
+    this._startPoint = axis!.getOriginalCoord({
+      // 超出安全区域的点直接落在安全区域边缘
+      x: config.outOfImage ? e.offsetX : axis!.getSafeX(e.offsetX),
+      y: config.outOfImage ? e.offsetY : axis!.getSafeY(e.offsetY),
+    });
 
-      this.sketch = new Rect({
-        id: uid(),
-        style: { ...style, stroke: AnnotationRect.labelStatic.getLabelColor(activeLabel) },
-        coordinate: cloneDeep(this._startPoint),
-        width: 1,
-        height: 1,
-      });
-    }
+    this.sketch = new Rect({
+      id: uid(),
+      style: { ...style, stroke: AnnotationRect.labelStatic.getLabelColor(activeLabel) },
+      coordinate: cloneDeep(this._startPoint),
+      width: 1,
+      height: 1,
+    });
   };
 
   protected handleMouseMove = (e: MouseEvent) => {
     const { sketch, _startPoint, config } = this;
 
-    const x = axis!.getOriginalX(config.outOfImage ? e.offsetX : axis!.getSafeX(e.offsetX));
-    const y = axis!.getOriginalY(config.outOfImage ? e.offsetY : axis!.getSafeY(e.offsetY));
-
     if (sketch && _startPoint) {
+      const x = axis!.getOriginalX(config.outOfImage ? e.offsetX : axis!.getSafeX(e.offsetX));
+      const y = axis!.getOriginalY(config.outOfImage ? e.offsetY : axis!.getSafeY(e.offsetY));
+
       if (e.offsetX < axis!.getScaledX(_startPoint.x)) {
         sketch.coordinate[0].x = x;
       } else {
@@ -325,6 +320,38 @@ export class RectTool extends Tool<RectData, RectStyle, RectToolOptions> {
       sketch.height = Math.abs(y - _startPoint.y);
 
       sketch.update();
+    }
+  };
+
+  protected handleMouseUp = (e: MouseEvent) => {
+    const { sketch, _startPoint, config } = this;
+
+    if (sketch && _startPoint) {
+      // 检查是否发生了移动
+      const currentPoint = axis!.getOriginalCoord({
+        x: e.offsetX,
+        y: e.offsetY,
+      });
+
+      const hasMoved = Math.abs(currentPoint.x - _startPoint.x) > 1 || Math.abs(currentPoint.y - _startPoint.y) > 1;
+
+      if (hasMoved) {
+        // 验证矩形的宽高
+        const width = Math.abs(currentPoint.x - _startPoint.x) / axis!.initialBackgroundScale;
+        const height = Math.abs(currentPoint.y - _startPoint.y) / axis!.initialBackgroundScale;
+
+        if (width < config.minWidth! || height < config.minHeight!) {
+          this.destroySketch();
+          axis?.rerender();
+          return;
+        }
+
+        this._archiveSketch(e);
+      } else {
+        // 如果没有移动，销毁sketch
+        this.destroySketch();
+        axis?.rerender();
+      }
     }
   };
 
