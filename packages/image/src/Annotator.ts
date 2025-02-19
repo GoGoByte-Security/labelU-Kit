@@ -142,9 +142,6 @@ export class Annotator extends AnnotatorBase {
     // 应用缩放
     axis.restScale(scale);
     axis.center();
-
-    // 确保重新渲染
-    this.render();
   }
 
   public get toolMap() {
