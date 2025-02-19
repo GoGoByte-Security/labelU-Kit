@@ -13,6 +13,8 @@
 - 支持视频标注
 - 支持音频标注
 - 原子化模块，可自由组合
+- gogobyte定制化、修复原有项目bug等
+- 持续更新维护
 
 ## 开始使用
 
@@ -23,7 +25,7 @@
 
 | 名称 | 版本 | 描述 |
 | --- | --- | --- |
-| [@labelu/image](./packages/image) | [![npm](https://img.shields.io/npm/v/%40labelu/image.svg)](https://www.npmjs.com/package/@labelu/image) | 图片标注引擎 |
+| [@gogobyte_security/labelu-image](./packages/image) | [![npm](https://img.shields.io/npm/v/%40labelu/image.svg)](https://www.npmjs.com/package/@gogobyte_security/labelu-image?activeTab=readme) | 图片标注引擎 |
 | [@labelu/i18n](./packages/i18n) | [![npm](https://img.shields.io/npm/v/%40labelu/i18n.svg)](https://www.npmjs.com/package/@labelu/i18n) | 国际化语言包 |
 | [@labelu/interface](./packages/interface) | [![npm](https://img.shields.io/npm/v/%40labelu/interface.svg)](https://www.npmjs.com/package/@labelu/interface) | 基础类型定义 |
 | [@labelu/components-react](./packages/components-react) | [![npm](https://img.shields.io/npm/v/%40labelu/components-react.svg)](https://www.npmjs.com/package/@labelu/components-react) | 基础 React 组件 |
